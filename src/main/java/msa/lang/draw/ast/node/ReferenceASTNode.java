@@ -2,7 +2,7 @@ package msa.lang.draw.ast.node;
 
 import msa.lang.draw.ast.DrawAbstractSyntaxTreeNode;
 
-public class ReferenceASTNode extends DrawAbstractSyntaxTreeNode {
+public class ReferenceASTNode extends ExpressionASTNode {
     private final String id;
 
     public ReferenceASTNode(String id) {

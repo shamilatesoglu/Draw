@@ -2,7 +2,7 @@ package msa.lang.draw.ast.node;
 
 public class TurnASTNode extends StatementASTNode{
     public enum Direction {
-        RIGHT, LEFT
+         LEFT, RIGHT
     }
 
     private final Direction direction;

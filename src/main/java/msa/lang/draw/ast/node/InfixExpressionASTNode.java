@@ -4,7 +4,7 @@ public class InfixExpressionASTNode extends ExpressionASTNode {
     private ExpressionASTNode left;
     private ExpressionASTNode right;
 
-    private int operator;
+    private final int operator;
 
     public InfixExpressionASTNode(ExpressionASTNode left, int operator, ExpressionASTNode right) {
         this.left = left;

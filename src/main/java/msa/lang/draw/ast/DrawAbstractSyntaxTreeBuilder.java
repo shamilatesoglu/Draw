@@ -68,8 +68,8 @@ public class DrawAbstractSyntaxTreeBuilder extends DrawBaseVisitor<DrawAbstractS
 
     @Override
     public DrawAbstractSyntaxTreeNode visitTurnStatement(DrawParser.TurnStatementContext ctx) {
-        return new TurnASTNode(ctx.direction.getType() == DrawLexer.RIGHT
-                ? TurnASTNode.Direction.RIGHT : TurnASTNode.Direction.LEFT, (ExpressionASTNode) visit(ctx.expression()));
+        return new TurnASTNode(ctx.direction.getType() == DrawLexer.LEFT
+                ? TurnASTNode.Direction.LEFT : TurnASTNode.Direction.RIGHT, (ExpressionASTNode) visit(ctx.expression()));
     }
 
     @Override
@@ -94,13 +94,24 @@ public class DrawAbstractSyntaxTreeBuilder extends DrawBaseVisitor<DrawAbstractS
 
     @Override
     public DrawAbstractSyntaxTreeNode visitNumberExpression(DrawParser.NumberExpressionContext ctx) {
-        String text = ctx.value.getText().toLowerCase();
-        if (text.equals("true") || text.equals("false")) {
-            boolean val = Boolean.parseBoolean(text);
-            return new NumberASTNode(val ? 1.0 : 0.0);
-        } else {
-            return new NumberASTNode(Double.valueOf(text));
+        String text = ctx.value.getText();
+        switch (ctx.value.getType()) {
+            case DrawLexer.INTEGER:
+                return new IntegerASTNode(Integer.parseInt(text));
+            case DrawLexer.REAL:
+                return new RealNumberASTNode(Double.parseDouble(text));
+            case DrawLexer.HEX:
+                return new IntegerASTNode(Integer.decode(text));
+            case DrawLexer.COLOR_LITERAL:
+                return new IntegerASTNode(Integer.decode(text.replace("c", "0x")));
+            case DrawLexer.BOOLEAN_LITERAL:
+                if (text.equalsIgnoreCase("true") || text.equalsIgnoreCase("false")) {
+                    boolean val = Boolean.parseBoolean(text);
+                    return new IntegerASTNode(val ? 1 : 0);
+                }
+                break;
         }
+        return null;
     }
 
     @Override

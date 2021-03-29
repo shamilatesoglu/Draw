@@ -24,8 +24,8 @@ public class DrawParser extends Parser {
 		OPERATOR_ADD=30, OPERATOR_SUB=31, OPERATOR_MUL=32, OPERATOR_EXP=33, OPERATOR_DIV=34, 
 		OPERATOR_AND=35, OPERATOR_OR=36, OPERATOR_XOR=37, OPERATOR_EQ=38, OPERATOR_NEQ=39, 
 		OPERATOR_GT=40, OPERATOR_LT=41, OPERATOR_GTEQ=42, OPERATOR_LTEQ=43, OPERATOR_SCOPE=44, 
-		OPERATOR_IN=45, NUM=46, COLOR_LITERAL=47, HEX=48, ID=49, COMMENT=50, LINE_COMMENT=51, 
-		WS=52;
+		OPERATOR_IN=45, INTEGER=46, REAL=47, COLOR_LITERAL=48, HEX=49, ID=50, 
+		COMMENT=51, LINE_COMMENT=52, WS=53;
 	public static final int
 		RULE_compilationUnit = 0, RULE_statement = 1, RULE_paperDeclaration = 2, 
 		RULE_variableDefinition = 3, RULE_assignment = 4, RULE_goToStatement = 5, 
@@ -61,7 +61,8 @@ public class DrawParser extends Parser {
 			"OPERATOR_SUB", "OPERATOR_MUL", "OPERATOR_EXP", "OPERATOR_DIV", "OPERATOR_AND", 
 			"OPERATOR_OR", "OPERATOR_XOR", "OPERATOR_EQ", "OPERATOR_NEQ", "OPERATOR_GT", 
 			"OPERATOR_LT", "OPERATOR_GTEQ", "OPERATOR_LTEQ", "OPERATOR_SCOPE", "OPERATOR_IN", 
-			"NUM", "COLOR_LITERAL", "HEX", "ID", "COMMENT", "LINE_COMMENT", "WS"
+			"INTEGER", "REAL", "COLOR_LITERAL", "HEX", "ID", "COMMENT", "LINE_COMMENT", 
+			"WS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -1016,8 +1017,10 @@ public class DrawParser extends Parser {
 	}
 	public static class NumberExpressionContext extends ExpressionContext {
 		public Token value;
-		public TerminalNode NUM() { return getToken(DrawParser.NUM, 0); }
+		public TerminalNode INTEGER() { return getToken(DrawParser.INTEGER, 0); }
+		public TerminalNode REAL() { return getToken(DrawParser.REAL, 0); }
 		public TerminalNode HEX() { return getToken(DrawParser.HEX, 0); }
+		public TerminalNode COLOR_LITERAL() { return getToken(DrawParser.COLOR_LITERAL, 0); }
 		public TerminalNode BOOLEAN_LITERAL() { return getToken(DrawParser.BOOLEAN_LITERAL, 0); }
 		public NumberExpressionContext(ExpressionContext ctx) { copyFrom(ctx); }
 		@Override
@@ -1130,26 +1133,19 @@ public class DrawParser extends Parser {
 				expression(7);
 				}
 				break;
-			case ID:
-				{
-				_localctx = new ReferenceExpressionContext(_localctx);
-				_ctx = _localctx;
-				_prevctx = _localctx;
-				setState(114);
-				reference();
-				}
-				break;
 			case BOOLEAN_LITERAL:
-			case NUM:
+			case INTEGER:
+			case REAL:
+			case COLOR_LITERAL:
 			case HEX:
 				{
 				_localctx = new NumberExpressionContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(115);
+				setState(114);
 				((NumberExpressionContext)_localctx).value = _input.LT(1);
 				_la = _input.LA(1);
-				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN_LITERAL) | (1L << NUM) | (1L << HEX))) != 0)) ) {
+				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN_LITERAL) | (1L << INTEGER) | (1L << REAL) | (1L << COLOR_LITERAL) | (1L << HEX))) != 0)) ) {
 					((NumberExpressionContext)_localctx).value = (Token)_errHandler.recoverInline(this);
 				}
 				else {
@@ -1157,6 +1153,15 @@ public class DrawParser extends Parser {
 					_errHandler.reportMatch(this);
 					consume();
 				}
+				}
+				break;
+			case ID:
+				{
+				_localctx = new ReferenceExpressionContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(115);
+				reference();
 				}
 				break;
 			default:
@@ -1286,7 +1291,7 @@ public class DrawParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\66\u008a\4\2\t\2"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\67\u008a\4\2\t\2"+
 		"\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
 		"\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\3\2\7\2 \n\2\f\2\16\2#\13\2"+
 		"\3\2\3\2\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5\3\61\n\3\3\4\3\4\3"+
@@ -1296,33 +1301,33 @@ public class DrawParser extends Parser {
 		"\f\3\f\3\f\3\r\3\r\3\r\3\r\3\16\3\16\3\17\3\17\3\17\3\17\3\17\3\17\3\17"+
 		"\3\17\3\17\5\17w\n\17\3\17\3\17\3\17\3\17\3\17\3\17\3\17\3\17\3\17\3\17"+
 		"\3\17\3\17\7\17\u0085\n\17\f\17\16\17\u0088\13\17\3\17\2\3\34\20\2\4\6"+
-		"\b\n\f\16\20\22\24\26\30\32\34\2\7\3\2\b\t\3\2\21\22\3\2 !\5\2\35\35\60"+
-		"\60\62\62\4\2\"\"$$\2\u008d\2!\3\2\2\2\4\60\3\2\2\2\6\62\3\2\2\2\b\67"+
-		"\3\2\2\2\n=\3\2\2\2\fB\3\2\2\2\16H\3\2\2\2\20M\3\2\2\2\22Q\3\2\2\2\24"+
-		"V\3\2\2\2\26b\3\2\2\2\30g\3\2\2\2\32k\3\2\2\2\34v\3\2\2\2\36 \5\4\3\2"+
-		"\37\36\3\2\2\2 #\3\2\2\2!\37\3\2\2\2!\"\3\2\2\2\"$\3\2\2\2#!\3\2\2\2$"+
-		"%\7\2\2\3%\3\3\2\2\2&\61\5\6\4\2\'\61\5\b\5\2(\61\5\n\6\2)\61\5\f\7\2"+
-		"*\61\5\16\b\2+\61\5\20\t\2,\61\5\22\n\2-\61\5\24\13\2.\61\5\26\f\2/\61"+
-		"\5\30\r\2\60&\3\2\2\2\60\'\3\2\2\2\60(\3\2\2\2\60)\3\2\2\2\60*\3\2\2\2"+
-		"\60+\3\2\2\2\60,\3\2\2\2\60-\3\2\2\2\60.\3\2\2\2\60/\3\2\2\2\61\5\3\2"+
-		"\2\2\62\63\7\6\2\2\63\64\5\34\17\2\64\65\5\34\17\2\65\66\7\24\2\2\66\7"+
-		"\3\2\2\2\678\7\n\2\289\7\63\2\29:\7\26\2\2:;\5\34\17\2;<\7\24\2\2<\t\3"+
-		"\2\2\2=>\5\32\16\2>?\7\26\2\2?@\5\34\17\2@A\7\24\2\2A\13\3\2\2\2BC\7\13"+
-		"\2\2CD\7\f\2\2DE\5\34\17\2EF\5\34\17\2FG\7\24\2\2G\r\3\2\2\2HI\7\r\2\2"+
-		"IJ\5\34\17\2JK\5\34\17\2KL\7\24\2\2L\17\3\2\2\2MN\7\7\2\2NO\t\2\2\2OP"+
-		"\7\24\2\2P\21\3\2\2\2QR\7\7\2\2RS\7\16\2\2ST\5\34\17\2TU\7\24\2\2U\23"+
-		"\3\2\2\2VW\7\17\2\2WX\5\34\17\2X\\\7\27\2\2Y[\5\4\3\2ZY\3\2\2\2[^\3\2"+
-		"\2\2\\Z\3\2\2\2\\]\3\2\2\2]_\3\2\2\2^\\\3\2\2\2_`\7\30\2\2`a\7\24\2\2"+
-		"a\25\3\2\2\2bc\7\20\2\2cd\t\3\2\2de\5\34\17\2ef\7\24\2\2f\27\3\2\2\2g"+
-		"h\7\23\2\2hi\5\34\17\2ij\7\24\2\2j\31\3\2\2\2kl\7\63\2\2l\33\3\2\2\2m"+
-		"n\b\17\1\2no\7\3\2\2op\5\34\17\2pq\7\4\2\2qw\3\2\2\2rs\t\4\2\2sw\5\34"+
-		"\17\ttw\5\32\16\2uw\t\5\2\2vm\3\2\2\2vr\3\2\2\2vt\3\2\2\2vu\3\2\2\2w\u0086"+
-		"\3\2\2\2xy\f\b\2\2yz\7\'\2\2z\u0085\5\34\17\t{|\f\7\2\2|}\7#\2\2}\u0085"+
-		"\5\34\17\b~\177\f\6\2\2\177\u0080\t\6\2\2\u0080\u0085\5\34\17\7\u0081"+
-		"\u0082\f\5\2\2\u0082\u0083\t\4\2\2\u0083\u0085\5\34\17\6\u0084x\3\2\2"+
-		"\2\u0084{\3\2\2\2\u0084~\3\2\2\2\u0084\u0081\3\2\2\2\u0085\u0088\3\2\2"+
-		"\2\u0086\u0084\3\2\2\2\u0086\u0087\3\2\2\2\u0087\35\3\2\2\2\u0088\u0086"+
-		"\3\2\2\2\b!\60\\v\u0084\u0086";
+		"\b\n\f\16\20\22\24\26\30\32\34\2\7\3\2\b\t\3\2\21\22\3\2 !\4\2\35\35\60"+
+		"\63\4\2\"\"$$\2\u008d\2!\3\2\2\2\4\60\3\2\2\2\6\62\3\2\2\2\b\67\3\2\2"+
+		"\2\n=\3\2\2\2\fB\3\2\2\2\16H\3\2\2\2\20M\3\2\2\2\22Q\3\2\2\2\24V\3\2\2"+
+		"\2\26b\3\2\2\2\30g\3\2\2\2\32k\3\2\2\2\34v\3\2\2\2\36 \5\4\3\2\37\36\3"+
+		"\2\2\2 #\3\2\2\2!\37\3\2\2\2!\"\3\2\2\2\"$\3\2\2\2#!\3\2\2\2$%\7\2\2\3"+
+		"%\3\3\2\2\2&\61\5\6\4\2\'\61\5\b\5\2(\61\5\n\6\2)\61\5\f\7\2*\61\5\16"+
+		"\b\2+\61\5\20\t\2,\61\5\22\n\2-\61\5\24\13\2.\61\5\26\f\2/\61\5\30\r\2"+
+		"\60&\3\2\2\2\60\'\3\2\2\2\60(\3\2\2\2\60)\3\2\2\2\60*\3\2\2\2\60+\3\2"+
+		"\2\2\60,\3\2\2\2\60-\3\2\2\2\60.\3\2\2\2\60/\3\2\2\2\61\5\3\2\2\2\62\63"+
+		"\7\6\2\2\63\64\5\34\17\2\64\65\5\34\17\2\65\66\7\24\2\2\66\7\3\2\2\2\67"+
+		"8\7\n\2\289\7\64\2\29:\7\26\2\2:;\5\34\17\2;<\7\24\2\2<\t\3\2\2\2=>\5"+
+		"\32\16\2>?\7\26\2\2?@\5\34\17\2@A\7\24\2\2A\13\3\2\2\2BC\7\13\2\2CD\7"+
+		"\f\2\2DE\5\34\17\2EF\5\34\17\2FG\7\24\2\2G\r\3\2\2\2HI\7\r\2\2IJ\5\34"+
+		"\17\2JK\5\34\17\2KL\7\24\2\2L\17\3\2\2\2MN\7\7\2\2NO\t\2\2\2OP\7\24\2"+
+		"\2P\21\3\2\2\2QR\7\7\2\2RS\7\16\2\2ST\5\34\17\2TU\7\24\2\2U\23\3\2\2\2"+
+		"VW\7\17\2\2WX\5\34\17\2X\\\7\27\2\2Y[\5\4\3\2ZY\3\2\2\2[^\3\2\2\2\\Z\3"+
+		"\2\2\2\\]\3\2\2\2]_\3\2\2\2^\\\3\2\2\2_`\7\30\2\2`a\7\24\2\2a\25\3\2\2"+
+		"\2bc\7\20\2\2cd\t\3\2\2de\5\34\17\2ef\7\24\2\2f\27\3\2\2\2gh\7\23\2\2"+
+		"hi\5\34\17\2ij\7\24\2\2j\31\3\2\2\2kl\7\64\2\2l\33\3\2\2\2mn\b\17\1\2"+
+		"no\7\3\2\2op\5\34\17\2pq\7\4\2\2qw\3\2\2\2rs\t\4\2\2sw\5\34\17\ttw\t\5"+
+		"\2\2uw\5\32\16\2vm\3\2\2\2vr\3\2\2\2vt\3\2\2\2vu\3\2\2\2w\u0086\3\2\2"+
+		"\2xy\f\b\2\2yz\7\'\2\2z\u0085\5\34\17\t{|\f\7\2\2|}\7#\2\2}\u0085\5\34"+
+		"\17\b~\177\f\6\2\2\177\u0080\t\6\2\2\u0080\u0085\5\34\17\7\u0081\u0082"+
+		"\f\5\2\2\u0082\u0083\t\4\2\2\u0083\u0085\5\34\17\6\u0084x\3\2\2\2\u0084"+
+		"{\3\2\2\2\u0084~\3\2\2\2\u0084\u0081\3\2\2\2\u0085\u0088\3\2\2\2\u0086"+
+		"\u0084\3\2\2\2\u0086\u0087\3\2\2\2\u0087\35\3\2\2\2\u0088\u0086\3\2\2"+
+		"\2\b!\60\\v\u0084\u0086";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

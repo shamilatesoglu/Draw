@@ -72,8 +72,8 @@ expression
 //    |   left=expression operation=('=='|'!='|'>'|'<'|'>='|'<=') right=expression                # infixExpression
 //    |   left=expression operation=('&&'|'||') right=expression                                  # infixExpression
 //    |   check=expression '?' first=expression ':' second=expression                             # conditionalExpression
+    |   value=(INTEGER|REAL|HEX|COLOR_LITERAL|BOOLEAN_LITERAL)                                  # numberExpression
     |   reference                                                                               # referenceExpression
-    |   value=(NUM|HEX|BOOLEAN_LITERAL)                                                         # numberExpression
     ;
 
 STRING_LITERAL: '"' ( ESC | ~[\\"\r\n] )* '"';
@@ -130,9 +130,10 @@ OPERATOR_LTEQ   : '<=';
 OPERATOR_SCOPE  : '::';
 OPERATOR_IN     : '<<';
 
-NUM             :   [0-9]+ ('.' [0-9]+)? ([eE] [+-]? [0-9]+)?;
-COLOR_LITERAL   :   'c'[0-9]+;
-HEX             :   '0x'[0-9]+;
+INTEGER         :   [0-9]+;
+REAL            :   [0-9]+ ('.' [0-9]+)? ([eE] [+-]? [0-9]+)?;
+COLOR_LITERAL   :   'c' ([a-fA-F_0-9]+);
+HEX             :   '0x' ([a-fA-F_0-9]+);
 ID              :   [a-zA-Z_0-9]+;
 
 COMMENT
