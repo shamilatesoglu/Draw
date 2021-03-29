@@ -1,0 +1,18 @@
+paper 600 400.
+
+go to 300 200.
+
+let red = cff0000.
+
+pen color red.
+
+pen down.
+
+let r = 360.
+
+repeat r {
+    turn right 1.
+    forward 1.
+}.
+
+
