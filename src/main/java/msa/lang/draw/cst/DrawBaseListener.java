@@ -28,18 +28,6 @@ public class DrawBaseListener implements DrawListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterStatementList(DrawParser.StatementListContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitStatementList(DrawParser.StatementListContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterStatement(DrawParser.StatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -64,13 +52,25 @@ public class DrawBaseListener implements DrawListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterVariableDeclaration(DrawParser.VariableDeclarationContext ctx) { }
+	@Override public void enterVariableDefinition(DrawParser.VariableDefinitionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitVariableDeclaration(DrawParser.VariableDeclarationContext ctx) { }
+	@Override public void exitVariableDefinition(DrawParser.VariableDefinitionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAssignment(DrawParser.AssignmentContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAssignment(DrawParser.AssignmentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

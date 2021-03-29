@@ -2,16 +2,13 @@
 grammar Draw;
 
 compilationUnit
-    :  statementList EOF
-    ;
-
-statementList
-    : (statement)*
+    :  (statement)* EOF
     ;
 
 statement
     : paperDeclaration
-    | variableDeclaration
+    | variableDefinition
+    | assignment
     | goToStatement
     | moveStatement
     | penStateStatement
@@ -25,8 +22,12 @@ paperDeclaration
     : PAPER width=expression height=expression DOT
     ;
 
-variableDeclaration
+variableDefinition
     : LET identifier=ID ASSIGN expression DOT
+    ;
+
+assignment
+    : reference ASSIGN expression DOT
     ;
 
 goToStatement
@@ -46,7 +47,7 @@ penColorStatement
     ;
 
 repeatStatement
-    : REPEAT times=expression LCURLY statementList RCURLY DOT
+    : REPEAT times=expression LCURLY (statement)* RCURLY DOT
     ;
 
 turnStatement

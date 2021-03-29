@@ -18,16 +18,6 @@ public interface DrawListener extends ParseTreeListener {
 	 */
 	void exitCompilationUnit(DrawParser.CompilationUnitContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link DrawParser#statementList}.
-	 * @param ctx the parse tree
-	 */
-	void enterStatementList(DrawParser.StatementListContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link DrawParser#statementList}.
-	 * @param ctx the parse tree
-	 */
-	void exitStatementList(DrawParser.StatementListContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link DrawParser#statement}.
 	 * @param ctx the parse tree
 	 */
@@ -48,15 +38,25 @@ public interface DrawListener extends ParseTreeListener {
 	 */
 	void exitPaperDeclaration(DrawParser.PaperDeclarationContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link DrawParser#variableDeclaration}.
+	 * Enter a parse tree produced by {@link DrawParser#variableDefinition}.
 	 * @param ctx the parse tree
 	 */
-	void enterVariableDeclaration(DrawParser.VariableDeclarationContext ctx);
+	void enterVariableDefinition(DrawParser.VariableDefinitionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link DrawParser#variableDeclaration}.
+	 * Exit a parse tree produced by {@link DrawParser#variableDefinition}.
 	 * @param ctx the parse tree
 	 */
-	void exitVariableDeclaration(DrawParser.VariableDeclarationContext ctx);
+	void exitVariableDefinition(DrawParser.VariableDefinitionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DrawParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void enterAssignment(DrawParser.AssignmentContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DrawParser#assignment}.
+	 * @param ctx the parse tree
+	 */
+	void exitAssignment(DrawParser.AssignmentContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link DrawParser#goToStatement}.
 	 * @param ctx the parse tree

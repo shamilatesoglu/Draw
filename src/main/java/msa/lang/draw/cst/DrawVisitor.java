@@ -17,12 +17,6 @@ public interface DrawVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCompilationUnit(DrawParser.CompilationUnitContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link DrawParser#statementList}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitStatementList(DrawParser.StatementListContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link DrawParser#statement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -35,11 +29,17 @@ public interface DrawVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPaperDeclaration(DrawParser.PaperDeclarationContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link DrawParser#variableDeclaration}.
+	 * Visit a parse tree produced by {@link DrawParser#variableDefinition}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitVariableDeclaration(DrawParser.VariableDeclarationContext ctx);
+	T visitVariableDefinition(DrawParser.VariableDefinitionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DrawParser#assignment}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAssignment(DrawParser.AssignmentContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link DrawParser#goToStatement}.
 	 * @param ctx the parse tree
