@@ -1,20 +1,10 @@
 package msa.lang.draw.ast.node;
 
 public class TurnASTNode extends StatementASTNode{
-    public enum Direction {
-         LEFT, RIGHT
-    }
-
-    private final Direction direction;
     private final ExpressionASTNode degreesExpression;
 
-    public TurnASTNode(Direction direction, ExpressionASTNode degreesExpression) {
-        this.direction = direction;
+    public TurnASTNode(ExpressionASTNode degreesExpression) {
         this.degreesExpression = degreesExpression;
-    }
-
-    public Direction getDirection() {
-        return direction;
     }
 
     public ExpressionASTNode getDegreesExpression() {

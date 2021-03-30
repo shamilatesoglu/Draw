@@ -4,13 +4,12 @@ import msa.lang.draw.ast.DrawAbstractSyntaxTreeBuilder;
 import msa.lang.draw.ast.node.CompilationUnitASTNode;
 import msa.lang.draw.cst.DrawLexer;
 import msa.lang.draw.cst.DrawParser;
+import msa.lang.draw.domain.DrawCommandQueue;
+import msa.lang.draw.runtime.ExecutorASTVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 
-import java.io.FileDescriptor;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 
 public class DrawInterpreter {
 
@@ -23,14 +22,18 @@ public class DrawInterpreter {
 
         CompilationUnitASTNode root = (CompilationUnitASTNode) new DrawAbstractSyntaxTreeBuilder().visitCompilationUnit(cst);
 
+        ExecutorASTVisitor executor = new ExecutorASTVisitor();
+        executor.visit(root);
 
-        //// Semantic Analysis
-        //SemanticAnalyser semanticAnalyser = new SemanticAnalyser();
-        //semanticAnalyser.visit(root);
+        DrawCommandQueue commandQueue = executor.getCommandQueue();
 
-        //// Interpretation
-        //AutoComputeInterpreter interpreter = new AutoComputeInterpreter(semanticAnalyser.getSymbolTable(), semanticAnalyser.getScopeGraph(), out);
-        //interpreter.interpret(root);
+        commandQueue.executeAll();
+
+        try {
+            commandQueue.getPaper().print(new File("output.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void executeAll(String source) {

@@ -1,4 +1,4 @@
-package msa.lang.draw.ast;
+package msa.lang.draw.ast.node;
 
 public abstract class DrawAbstractSyntaxTreeNode {
 }

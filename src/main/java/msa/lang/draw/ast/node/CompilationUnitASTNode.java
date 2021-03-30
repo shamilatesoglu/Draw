@@ -1,7 +1,5 @@
 package msa.lang.draw.ast.node;
 
-import msa.lang.draw.ast.DrawAbstractSyntaxTreeNode;
-
 import java.util.ArrayList;
 import java.util.List;
 

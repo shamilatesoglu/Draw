@@ -11,7 +11,7 @@ pen down.
 let r = 360.
 
 repeat r {
-    turn right 1.
+    turn -1.
     forward 1.
 }.
 

@@ -51,7 +51,7 @@ repeatStatement
     ;
 
 turnStatement
-    : TURN direction=(RIGHT|LEFT) expression DOT
+    : TURN expression DOT
     ;
 
 forwardStatement

@@ -10,4 +10,8 @@ public class SetPenStateASTNode extends StatementASTNode {
     public SetPenStateASTNode(PenState state) {
         this.state = state;
     }
+
+    public PenState getState() {
+        return state;
+    }
 }

@@ -68,8 +68,7 @@ public class DrawAbstractSyntaxTreeBuilder extends DrawBaseVisitor<DrawAbstractS
 
     @Override
     public DrawAbstractSyntaxTreeNode visitTurnStatement(DrawParser.TurnStatementContext ctx) {
-        return new TurnASTNode(ctx.direction.getType() == DrawLexer.LEFT
-                ? TurnASTNode.Direction.LEFT : TurnASTNode.Direction.RIGHT, (ExpressionASTNode) visit(ctx.expression()));
+        return new TurnASTNode((ExpressionASTNode) visit(ctx.expression()));
     }
 
     @Override

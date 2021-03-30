@@ -1,7 +1,5 @@
 package msa.lang.draw.ast.node;
 
-import msa.lang.draw.ast.DrawAbstractSyntaxTreeNode;
-
 public class VariableDefinitionASTNode extends StatementASTNode {
     private final String name;
     private final ExpressionASTNode expression;
