@@ -10,8 +10,10 @@ pen down.
 
 let r = 360.
 
+let c = -1.
+
 repeat r {
-    turn -1.
+    turn c.
     forward 1.
 }.
 

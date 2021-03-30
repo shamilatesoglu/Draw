@@ -9,8 +9,8 @@ public class DrawCommandQueue {
 
     private Queue<DrawCommand> queue;
 
-    private Pen pen;
-    private Paper paper;
+    private final Pen pen;
+    private final Paper paper;
 
     public DrawCommandQueue(Pen pen, Paper paper) {
         queue = new ArrayDeque<>();

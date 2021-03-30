@@ -15,10 +15,16 @@ dependencies {
 
     implementation 'org.antlr:antlr4:4.9.1'
 
-    implementation 'org.la4j:la4j:0.6.0'
+    // implementation 'info.picocli:picocli:4.6.1'
+    // annotationProcessor 'info.picocli:picocli-codegen:4.6.1'
+}
 
-    implementation 'info.picocli:picocli:4.6.1'
-    annotationProcessor 'info.picocli:picocli-codegen:4.6.1'
+jar {
+    manifest {
+        attributes (
+                'Main-Class': 'msa.lang.draw.DrawInterpreter'
+        )
+    }
 }
 
 test {

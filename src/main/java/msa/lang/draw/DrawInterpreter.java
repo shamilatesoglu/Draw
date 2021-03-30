@@ -6,10 +6,12 @@ import msa.lang.draw.cst.DrawLexer;
 import msa.lang.draw.cst.DrawParser;
 import msa.lang.draw.domain.DrawCommandQueue;
 import msa.lang.draw.runtime.ExecutorASTVisitor;
+import msa.lang.draw.utils.FileUtils;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 
 import java.io.*;
+import java.util.Scanner;
 
 public class DrawInterpreter {
 
@@ -31,9 +33,16 @@ public class DrawInterpreter {
 
         try {
             commandQueue.getPaper().print(new File("output.png"));
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Press enter key to terminate...");
+        scanner.nextLine();
+
+
     }
 
     public static void executeAll(String source) {
@@ -43,6 +52,14 @@ public class DrawInterpreter {
         } catch (UnsupportedEncodingException e) {
             throw new InternalError("VM does not support mandatory encoding UTF-8");
         }
+    }
+
+    public static void main(String[] args) {
+        String filepath = args[0];
+
+        String source = FileUtils.readString(filepath);
+
+        executeAll(source);
     }
 
 }
