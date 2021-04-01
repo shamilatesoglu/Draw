@@ -9,24 +9,29 @@ repositories {
     mavenCentral()
 }
 
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'msa.lang.draw.DrawInterpreter'
+    }
+    archiveFileName = "DrawDSL.jar"
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    with jar
+}
+
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 
     implementation 'org.antlr:antlr4:4.9.1'
 
-    // implementation 'info.picocli:picocli:4.6.1'
-    // annotationProcessor 'info.picocli:picocli-codegen:4.6.1'
-}
-
-jar {
-    manifest {
-        attributes (
-                'Main-Class': 'msa.lang.draw.DrawInterpreter'
-        )
-    }
+    implementation 'net.sourceforge.argparse4j:argparse4j:0.8.1'
 }
 
 test {
     useJUnitPlatform()
 }
+
+apply plugin: 'idea'
