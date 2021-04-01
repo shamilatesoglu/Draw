@@ -5,8 +5,8 @@ import msa.lang.draw.domain.Pen;
 import msa.lang.draw.domain.math.Vector2D;
 
 public class MovePenCommand implements DrawCommand {
-    private double dX;
-    private double dY;
+    private final double dX;
+    private final double dY;
 
     public MovePenCommand(double dX, double dY) {
         this.dX = dX;

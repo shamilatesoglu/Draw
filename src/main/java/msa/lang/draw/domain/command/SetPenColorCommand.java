@@ -5,7 +5,7 @@ import msa.lang.draw.domain.Pen;
 
 public class SetPenColorCommand implements  DrawCommand{
 
-    private int color;
+    private final int color;
 
     public SetPenColorCommand(int color) {
         this.color = color;

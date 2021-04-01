@@ -18,17 +18,19 @@ public class ExecutorASTVisitor extends DrawBaseASTVisitor<Void> {
 
     private final Map<String, Double> evaluated;
 
-    private DrawCommandQueue commandQueue;
+    private Pen pen;
+    private Paper paper;
 
     public ExecutorASTVisitor() {
         this.symbolTable = new SymbolTable();
         this.evaluated = new LinkedHashMap<>();
 
-        this.commandQueue = null;
+        this.pen = new Pen();
+        this.paper = null;
     }
 
-    public DrawCommandQueue getCommandQueue() {
-        return commandQueue;
+    public Paper getPaper() {
+        return paper;
     }
 
     private Double evaluateExpression(ExpressionASTNode expression) {
@@ -52,7 +54,7 @@ public class ExecutorASTVisitor extends DrawBaseASTVisitor<Void> {
     @Override
     public Void visit(ForwardASTNode node) {
         DrawCommand command = new ForwardCommand(evaluateExpression(node.getExpression()));
-        commandQueue.enqueue(command);
+        command.execute(pen, paper);
         return null;
     }
 
@@ -60,7 +62,7 @@ public class ExecutorASTVisitor extends DrawBaseASTVisitor<Void> {
     public Void visit(GoToASTNode node) {
         DrawCommand command = new SetPenPositionCommand(evaluateExpression(node.getXExpression()),
                 evaluateExpression(node.getYExpression()));
-        commandQueue.enqueue(command);
+        command.execute(pen, paper);
         return null;
     }
 
@@ -69,9 +71,8 @@ public class ExecutorASTVisitor extends DrawBaseASTVisitor<Void> {
         Paper paper = new Paper(evaluateExpression(node.getWidthExpression()).intValue(),
                 evaluateExpression(node.getHeightExpression()).intValue());
 
-        if (commandQueue == null) {
-            Pen pen = new Pen();
-            commandQueue = new DrawCommandQueue(pen, paper);
+        if (this.paper == null) {
+            this.paper = paper;
         } else {
             throw new IllegalArgumentException("We already have a paper.");
         }
@@ -95,8 +96,7 @@ public class ExecutorASTVisitor extends DrawBaseASTVisitor<Void> {
         Pen.State state = node.getState() == SetPenStateASTNode.PenState.UP ? Pen.State.UP : Pen.State.DOWN;
 
         DrawCommand command = new SetPenStateCommand(state);
-
-        commandQueue.enqueue(command);
+        command.execute(pen, paper);
 
         return null;
     }
@@ -104,8 +104,7 @@ public class ExecutorASTVisitor extends DrawBaseASTVisitor<Void> {
     @Override
     public Void visit(SetPenColorASTNode node) {
         DrawCommand command = new SetPenColorCommand(evaluateExpression(node.getColorExpression()).intValue());
-
-        commandQueue.enqueue(command);
+        command.execute(pen, paper);
 
         return null;
     }
@@ -113,7 +112,7 @@ public class ExecutorASTVisitor extends DrawBaseASTVisitor<Void> {
     @Override
     public Void visit(TurnASTNode node) {
         DrawCommand command = new TurnDirectionCommand(evaluateExpression(node.getDegreesExpression()));
-        commandQueue.enqueue(command);
+        command.execute(pen, paper);
         return null;
     }
 
@@ -121,7 +120,7 @@ public class ExecutorASTVisitor extends DrawBaseASTVisitor<Void> {
     public Void visit(MoveASTNode node) {
         DrawCommand command = new MovePenCommand(evaluateExpression(node.getDxExpression()),
                 evaluateExpression(node.getDyExpression()));
-        commandQueue.enqueue(command);
+        command.execute(pen, paper);
         return null;
     }
 

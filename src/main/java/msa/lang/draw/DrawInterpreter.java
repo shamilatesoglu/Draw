@@ -4,18 +4,20 @@ import msa.lang.draw.ast.DrawAbstractSyntaxTreeBuilder;
 import msa.lang.draw.ast.node.CompilationUnitASTNode;
 import msa.lang.draw.cst.DrawLexer;
 import msa.lang.draw.cst.DrawParser;
-import msa.lang.draw.domain.DrawCommandQueue;
 import msa.lang.draw.runtime.ExecutorASTVisitor;
 import msa.lang.draw.utils.FileUtils;
+import net.sourceforge.argparse4j.ArgumentParsers;
+import net.sourceforge.argparse4j.inf.ArgumentParser;
+import net.sourceforge.argparse4j.inf.ArgumentParserException;
+import net.sourceforge.argparse4j.inf.Namespace;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 
 import java.io.*;
-import java.util.Scanner;
 
 public class DrawInterpreter {
 
-    public static void executeAll(String source, PrintStream out) {
+    public static void executeAll(String source, OutputStream out) {
         // Lexical Analysis
         DrawLexer lexer = new DrawLexer(CharStreams.fromString(source));
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
@@ -27,22 +29,11 @@ public class DrawInterpreter {
         ExecutorASTVisitor executor = new ExecutorASTVisitor();
         executor.visit(root);
 
-        DrawCommandQueue commandQueue = executor.getCommandQueue();
-
-        commandQueue.executeAll();
-
         try {
-            commandQueue.getPaper().print(new File("output.png"));
+            executor.getPaper().print(out);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Press enter key to terminate...");
-        scanner.nextLine();
-
-
     }
 
     public static void executeAll(String source) {
@@ -55,11 +46,35 @@ public class DrawInterpreter {
     }
 
     public static void main(String[] args) {
-        String filepath = args[0];
 
-        String source = FileUtils.readString(filepath);
+        ArgumentParser parser = ArgumentParsers.newFor("Draw").build()
+                .defaultHelp(true)
+                .description("An interpreter for Draw, a LOGO-like DSL for drawing.");
+        parser.addArgument("-f", "--file")
+                .help("The file that contains the code to be interpreted");
+        parser.addArgument("-o", "--out") 
+                .setDefault("output.png")
+                .help("Output file path");
+        Namespace ns = null;
 
-        executeAll(source);
+        try {
+            ns = parser.parseArgs(args);
+        } catch (ArgumentParserException e) {
+            parser.handleError(e);
+            System.exit(1);
+        }
+
+        String filePath = ns.getString("file");
+        String source = FileUtils.readString(filePath);
+
+        String outputPath = ns.getString("out");
+
+        try {
+            OutputStream out = new FileOutputStream(outputPath);
+            executeAll(source, out);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
 }

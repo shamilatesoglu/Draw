@@ -6,7 +6,7 @@ import msa.lang.draw.domain.math.Vector2D;
 
 public class SetPenPositionCommand implements DrawCommand {
 
-    private Vector2D newPosition;
+    private final Vector2D newPosition;
 
     public SetPenPositionCommand( double x, double y) {
         newPosition = new Vector2D(x,y);

@@ -6,7 +6,7 @@ import msa.lang.draw.domain.math.Vector2D;
 
 public class ForwardCommand implements DrawCommand{
 
-    private double units;
+    private final double units;
 
     public ForwardCommand(double units) {
         this.units = units;
