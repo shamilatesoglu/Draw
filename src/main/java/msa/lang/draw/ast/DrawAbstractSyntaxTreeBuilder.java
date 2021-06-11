@@ -4,6 +4,7 @@ import msa.lang.draw.ast.node.*;
 import msa.lang.draw.cst.DrawBaseVisitor;
 import msa.lang.draw.cst.DrawLexer;
 import msa.lang.draw.cst.DrawParser;
+import org.antlr.v4.runtime.RuleContext;
 
 import java.util.stream.Collectors;
 
@@ -24,14 +25,10 @@ public class DrawAbstractSyntaxTreeBuilder extends DrawBaseVisitor<DrawAbstractS
         return new PaperDeclarationASTNode((ExpressionASTNode) visit(ctx.width), (ExpressionASTNode) visit(ctx.height));
     }
 
-    @Override
-    public DrawAbstractSyntaxTreeNode visitVariableDefinition(DrawParser.VariableDefinitionContext ctx) {
-        return new VariableDefinitionASTNode(ctx.identifier.getText(), (ExpressionASTNode) visit(ctx.expression()));
-    }
 
     @Override
     public DrawAbstractSyntaxTreeNode visitAssignment(DrawParser.AssignmentContext ctx) {
-        return new AssignmentASTNode((ReferenceASTNode) visit(ctx.reference()), (ExpressionASTNode) visit(ctx.expression()));
+        return new AssignmentASTNode(ctx.identifier().getText(), (ExpressionASTNode) visit(ctx.expression()));
     }
 
     @Override
@@ -59,7 +56,7 @@ public class DrawAbstractSyntaxTreeBuilder extends DrawBaseVisitor<DrawAbstractS
     public DrawAbstractSyntaxTreeNode visitRepeatStatement(DrawParser.RepeatStatementContext ctx) {
         RepeatASTNode node = new RepeatASTNode((ExpressionASTNode) visit(ctx.times));
 
-        node.getStatements().addAll(ctx.statement().stream()
+        node.getStatements().addAll(ctx.statementBlock().statement().stream()
                 .map(statementContext -> (StatementASTNode) visitStatement(statementContext))
                 .collect(Collectors.toList()));
 
@@ -130,5 +127,71 @@ public class DrawAbstractSyntaxTreeBuilder extends DrawBaseVisitor<DrawAbstractS
             default:
                 throw new IllegalArgumentException("Unary operator not supported: " + ctx.operation.getText());
         }
+    }
+
+    @Override
+    public DrawAbstractSyntaxTreeNode visitDepictDeclaration(DrawParser.DepictDeclarationContext ctx) {
+        DepictDeclarationASTNode node = new DepictDeclarationASTNode(ctx.identifier().getText());
+
+        node.getParameterList().addAll(ctx.parameterList().identifier().stream()
+                .map(RuleContext::getText).collect(Collectors.toList()));
+
+        node.getStatements().addAll(ctx.statementBlock().statement().stream()
+                .map(statementContext -> (StatementASTNode) visitStatement(statementContext))
+                .collect(Collectors.toList()));
+
+        return node;
+    }
+
+    @Override
+    public DrawAbstractSyntaxTreeNode visitDepictCall(DrawParser.DepictCallContext ctx) {
+        DepictCallASTNode node = new DepictCallASTNode((ReferenceASTNode) visit(ctx.reference()));
+
+        node.getActualParameterList().addAll(ctx.actualParameterList().expression().stream()
+                .map(expressionContext -> (ExpressionASTNode) visit(expressionContext))
+                .collect(Collectors.toList()));
+
+        return node;
+    }
+
+    @Override
+    public DrawAbstractSyntaxTreeNode visitIfStatement(DrawParser.IfStatementContext ctx) {
+        IfASTNode node = new IfASTNode(
+                (ExpressionASTNode) visit(ctx.expression()),
+                (StatementASTNode) visit(ctx.primary),
+                (StatementASTNode) visit(ctx.secondary));
+
+        return node;
+    }
+
+    @Override
+    public DrawAbstractSyntaxTreeNode visitStatementBlock(DrawParser.StatementBlockContext ctx) {
+        StatementBlockASTNode node = new StatementBlockASTNode();
+
+        node.getStatements().addAll(ctx.statement().stream()
+                .map(statementContext -> (StatementASTNode) visitStatement(statementContext))
+                .collect(Collectors.toList()));
+
+        return node;
+    }
+
+    @Override
+    public DrawAbstractSyntaxTreeNode visitWhileStatement(DrawParser.WhileStatementContext ctx) {
+        WhileASTNode node = new WhileASTNode((ExpressionASTNode) visit(ctx.expression()));
+
+        node.getStatements().addAll(ctx.statementBlock().statement().stream()
+                .map(statementContext -> (StatementASTNode) visitStatement(statementContext))
+                .collect(Collectors.toList()));
+
+        return node;
+    }
+
+    @Override
+    public DrawAbstractSyntaxTreeNode visitConditionalExpression(DrawParser.ConditionalExpressionContext ctx) {
+        return new ConditionalExpressionASTNode(
+                (ExpressionASTNode) visit(ctx.check),
+                (ExpressionASTNode) visit(ctx.first),
+                (ExpressionASTNode) visit(ctx.second)
+        );
     }
 }

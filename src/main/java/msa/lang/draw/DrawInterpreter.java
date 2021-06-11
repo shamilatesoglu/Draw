@@ -49,7 +49,7 @@ public class DrawInterpreter {
 
         ArgumentParser parser = ArgumentParsers.newFor("Draw").build()
                 .defaultHelp(true)
-                .description("An interpreter for Draw, a LOGO-like DSL for drawing.");
+                .description("An interpreter for Draw, a Logo-like DSL for drawing.");
         parser.addArgument("-f", "--file")
                 .help("The file that contains the code to be interpreted");
         parser.addArgument("-o", "--out") 

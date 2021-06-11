@@ -29,12 +29,6 @@ public interface DrawVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPaperDeclaration(DrawParser.PaperDeclarationContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link DrawParser#variableDefinition}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitVariableDefinition(DrawParser.VariableDefinitionContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link DrawParser#assignment}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -52,6 +46,42 @@ public interface DrawVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitMoveStatement(DrawParser.MoveStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DrawParser#depictDeclaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDepictDeclaration(DrawParser.DepictDeclarationContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DrawParser#depictCall}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDepictCall(DrawParser.DepictCallContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DrawParser#parameterList}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParameterList(DrawParser.ParameterListContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DrawParser#actualParameterList}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitActualParameterList(DrawParser.ActualParameterListContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DrawParser#ifStatement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIfStatement(DrawParser.IfStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DrawParser#statementBlock}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStatementBlock(DrawParser.StatementBlockContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link DrawParser#penStateStatement}.
 	 * @param ctx the parse tree
@@ -71,6 +101,12 @@ public interface DrawVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitRepeatStatement(DrawParser.RepeatStatementContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link DrawParser#whileStatement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitWhileStatement(DrawParser.WhileStatementContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link DrawParser#turnStatement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -88,6 +124,12 @@ public interface DrawVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitReference(DrawParser.ReferenceContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link DrawParser#identifier}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIdentifier(DrawParser.IdentifierContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code referenceExpression}
 	 * labeled alternative in {@link DrawParser#expression}.
@@ -109,6 +151,13 @@ public interface DrawVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitNumberExpression(DrawParser.NumberExpressionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code conditionalExpression}
+	 * labeled alternative in {@link DrawParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitConditionalExpression(DrawParser.ConditionalExpressionContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code parenthesisExpression}
 	 * labeled alternative in {@link DrawParser#expression}.

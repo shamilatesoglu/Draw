@@ -1,11 +1,9 @@
 package msa.lang.draw.runtime;
 
 import msa.lang.draw.ast.node.*;
-import msa.lang.draw.domain.DrawCommandQueue;
 import msa.lang.draw.domain.Paper;
 import msa.lang.draw.domain.Pen;
 import msa.lang.draw.domain.command.*;
-import msa.lang.draw.runtime.exception.UndefinedSymbolException;
 import msa.lang.draw.semantics.Symbol;
 import msa.lang.draw.semantics.SymbolTable;
 
@@ -41,10 +39,11 @@ public class ExecutorASTVisitor extends DrawBaseASTVisitor<Void> {
 
     @Override
     public Void visit(AssignmentASTNode node) {
-        String name = node.getReference().getId();
+        String name = node.getIdentifier();
 
         if (!symbolTable.contains(name))
-            throw new UndefinedSymbolException(name);
+            symbolTable.insert(new Symbol(name));
+
 
         evaluated.put(name, evaluateExpression(node.getExpression()));
 
@@ -118,7 +117,8 @@ public class ExecutorASTVisitor extends DrawBaseASTVisitor<Void> {
 
     @Override
     public Void visit(MoveASTNode node) {
-        DrawCommand command = new MovePenCommand(evaluateExpression(node.getDxExpression()),
+        DrawCommand command = new MovePenCommand(
+                evaluateExpression(node.getDxExpression()),
                 evaluateExpression(node.getDyExpression()));
         command.execute(pen, paper);
         return null;
@@ -127,12 +127,36 @@ public class ExecutorASTVisitor extends DrawBaseASTVisitor<Void> {
     @Override
     public Void visit(RepeatASTNode node) {
 
-        int  N = evaluateExpression(node.getNExpression()).intValue();
+        int N = evaluateExpression(node.getNExpression()).intValue();
 
         for (int i = 0; i < N; i++) {
             for (StatementASTNode statement : node.getStatements()) {
                 visit(statement);
             }
+        }
+
+        return null;
+    }
+
+    @Override
+    public Void visit(WhileASTNode node) {
+
+        while (evaluateExpression(node.getCheck()).intValue() != 0) {
+            for (StatementASTNode statement : node.getStatements()) {
+                visit(statement);
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public Void visit(IfASTNode node) {
+
+        if (evaluateExpression(node.getCheck()).intValue() != 0) {
+            visit(node.getPrimary());
+        } else {
+            visit(node.getSecondary());
         }
 
         return null;

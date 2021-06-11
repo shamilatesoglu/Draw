@@ -15,8 +15,7 @@ public class DrawBaseASTVisitor<T> extends DrawAbstractSyntaxTreeVisitor<T> {
 
     @Override
     public T visit(AssignmentASTNode node) {
-
-        visit(node.getReference());
+        
         visit(node.getExpression());
 
         return null;
@@ -113,6 +112,38 @@ public class DrawBaseASTVisitor<T> extends DrawAbstractSyntaxTreeVisitor<T> {
     @Override
     public T visit(RepeatASTNode node) {
         visit(node.getNExpression());
+
+        for (StatementASTNode statement : node.getStatements()) {
+            visit(statement);
+        }
+
+        return null;
+    }
+
+    @Override
+    public T visit(WhileASTNode node) {
+        visit(node.getCheck());
+
+        for (StatementASTNode statement : node.getStatements()) {
+            visit(statement);
+        }
+
+        return null;
+    }
+
+    @Override
+    public T visit(IfASTNode node) {
+        visit(node.getCheck());
+
+        visit(node.getPrimary());
+
+        visit(node.getSecondary());
+
+        return null;
+    }
+
+    @Override
+    public T visit(StatementBlockASTNode node) {
 
         for (StatementASTNode statement : node.getStatements()) {
             visit(statement);

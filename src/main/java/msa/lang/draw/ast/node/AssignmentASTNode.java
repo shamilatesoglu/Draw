@@ -1,16 +1,16 @@
 package msa.lang.draw.ast.node;
 
 public class AssignmentASTNode extends StatementASTNode {
-    private final ReferenceASTNode reference;
+    private final String identifier;
     private final ExpressionASTNode expression;
 
-    public AssignmentASTNode(ReferenceASTNode reference, ExpressionASTNode expression) {
-        this.reference = reference;
+    public AssignmentASTNode(String identifier, ExpressionASTNode expression) {
+        this.identifier = identifier;
         this.expression = expression;
     }
 
-    public ReferenceASTNode getReference() {
-        return reference;
+    public String getIdentifier() {
+        return identifier;
     }
 
     public ExpressionASTNode getExpression() {

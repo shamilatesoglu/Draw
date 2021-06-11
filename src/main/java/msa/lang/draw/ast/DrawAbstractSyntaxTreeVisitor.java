@@ -35,6 +35,12 @@ public abstract class DrawAbstractSyntaxTreeVisitor<T> {
 
     public abstract T visit(RepeatASTNode node);
 
+    public abstract T visit(WhileASTNode node);
+
+    public abstract T visit(IfASTNode node);
+
+    public abstract T visit(StatementBlockASTNode node);
+
     public T visit(DrawAbstractSyntaxTreeNode node) {
         if (node instanceof CompilationUnitASTNode) {
             return visit((CompilationUnitASTNode) node);
@@ -45,8 +51,14 @@ public abstract class DrawAbstractSyntaxTreeVisitor<T> {
         if (node instanceof ForwardASTNode) {
             return visit((ForwardASTNode) node);
         }
+        if (node instanceof IfASTNode) {
+            return visit((IfASTNode) node);
+        }
         if (node instanceof RepeatASTNode) {
             return visit((RepeatASTNode) node);
+        }
+        if (node instanceof WhileASTNode) {
+            return visit((WhileASTNode) node);
         }
         if (node instanceof GoToASTNode) {
             return visit((GoToASTNode) node);
@@ -83,6 +95,9 @@ public abstract class DrawAbstractSyntaxTreeVisitor<T> {
         }
         if (node instanceof VariableDefinitionASTNode) {
             return visit((VariableDefinitionASTNode) node);
+        }
+        if (node instanceof StatementBlockASTNode) {
+            return visit((StatementBlockASTNode) node);
         }
 
         return null;
