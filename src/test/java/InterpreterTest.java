@@ -12,7 +12,7 @@ public class InterpreterTest {
     public void testParseTree() throws UnsupportedEncodingException, FileNotFoundException {
 
 
-        String source = FileUtils.readString("grammar/sample.draw");
+        String source = FileUtils.readString("grammar/mandelbrot.draw");
 
         DrawInterpreter.executeAll(source, new FileOutputStream(new File("output.png")));
 

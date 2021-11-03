@@ -1,0 +1,64 @@
+/**
+ * Authors: Atil Kurtulmus, M. Samil Atesoglu
+ *          November 2021
+ */
+
+w = 500.
+h = 500.
+x = 0.
+y = 0.
+it = 20.
+
+paper w h.
+
+go x y.
+tw = w.
+th = h.
+repeat w {
+    repeat h {
+        zx = (4 * (x / w)) - 2.
+        zy = (4 * (y / h)) - 2.
+        zx0 = 0.
+        zy0 = 0.
+        xc = 0.
+        length = 0.
+
+        while (xc < it) && (length < 4)  {
+            zx1 = zx0 * zx0 - zy0 * zy0 + zx.
+            zy1 = 2 * zx0 * zy0 + zy.
+            zx0 = zx1.
+            zy0 = zy1.
+            length = zx0 * zx0 + zy0 * zy0.
+            xc = xc + 1.
+        }
+
+        t = 1 - xc/it.
+        t0r = 0.0.
+        t0g = 0.0.
+        t0b = 0.0.
+        t1r = 1.0.
+        t1g = 1.0.
+        t1b = 1.0.
+
+        r = (t1r-t0r) * t + t0r.
+        g = (t1g-t0g) * t + t0g.
+        b = (t1b-t0b) * t + t0b.
+
+        r = (r * 0xff0000) & 0xff0000.
+        g = (g * 0x00ff00) & 0x00ff00.
+        b = (b * 0x0000ff) & 0x0000ff.
+        col = r + g + b.
+
+        pen color col.
+
+        pen up.
+        go x y.
+        pen down.
+        go x y.
+        x = x + 1.
+    }
+    y = y + 1.
+    x = 0.
+}
+
+
