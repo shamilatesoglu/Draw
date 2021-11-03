@@ -103,6 +103,7 @@ expression
     |   left=expression operation=('+'|'-') right=expression                                    # infixExpression
     |   left=expression operation=('=='|'!='|'>'|'<'|'>='|'<=') right=expression                # infixExpression
     |   left=expression operation=('&&'|'||') right=expression                                  # infixExpression
+    |   left=expression operation='&' right=expression                                          # infixExpression
     |   check=expression '?' first=expression ':' second=expression                             # conditionalExpression
     |   value=(INTEGER|REAL|HEX|COLOR_LITERAL|BOOLEAN_LITERAL)                                  # numberExpression
     |   reference                                                                               # referenceExpression
@@ -176,22 +177,23 @@ BOOLEAN_LITERAL
 TRUE: ('TRUE'|'true');
 FALSE: ('FALSE'|'false');
 
-OPERATOR_ADD    : '+';
-OPERATOR_SUB    : '-';
-OPERATOR_MUL    : '*';
-OPERATOR_EXP    : '**';
-OPERATOR_DIV    : '/';
-OPERATOR_AND    : '&&';
-OPERATOR_OR     : '||';
-OPERATOR_XOR    : '^';
-OPERATOR_EQ     : '==';
-OPERATOR_NEQ    : '!=';
-OPERATOR_GT     : '>' ;
-OPERATOR_LT     : '<' ;
-OPERATOR_GTEQ   : '>=';
-OPERATOR_LTEQ   : '<=';
-OPERATOR_SCOPE  : '::';
-OPERATOR_IN     : '<<';
+OPERATOR_ADD         : '+';
+OPERATOR_SUB         : '-';
+OPERATOR_MUL         : '*';
+OPERATOR_EXP         : '**';
+OPERATOR_DIV         : '/';
+OPERATOR_AND         : '&&';
+OPERATOR_BITWISE_AND : '&';
+OPERATOR_OR          : '||';
+OPERATOR_XOR         : '^';
+OPERATOR_EQ          : '==';
+OPERATOR_NEQ         : '!=';
+OPERATOR_GT          : '>' ;
+OPERATOR_LT          : '<' ;
+OPERATOR_GTEQ        : '>=';
+OPERATOR_LTEQ        : '<=';
+OPERATOR_SCOPE       : '::';
+OPERATOR_IN          : '<<';
 
 INTEGER         :   [0-9]+;
 REAL            :   [0-9]+ ('.' [0-9]+)? ([eE] [+-]? [0-9]+)?;

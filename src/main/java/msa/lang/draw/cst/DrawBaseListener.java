@@ -1,4 +1,4 @@
-// Generated from D:/Library/Repos/DrawDSL/grammar\Draw.g4 by ANTLR 4.9.1
+// Generated from C:/Repos/Draw/grammar\Draw.g4 by ANTLR 4.9.1
 package msa.lang.draw.cst;
 
 import org.antlr.v4.runtime.ParserRuleContext;

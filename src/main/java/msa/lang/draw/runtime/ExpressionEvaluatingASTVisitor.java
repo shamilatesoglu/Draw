@@ -49,6 +49,8 @@ public class ExpressionEvaluatingASTVisitor extends DrawBaseASTVisitor<Double> {
                 return Math.pow(visit(node.getLeft()), visit(node.getRight()));
             case DrawLexer.OPERATOR_AND:
                 return (visit(node.getLeft()) == 1.0) && (visit(node.getRight()) == 1.0) ? 1.0 : 0.0;
+            case DrawLexer.OPERATOR_BITWISE_AND:
+                return (double) (((visit(node.getLeft()).intValue())) & ((visit(node.getRight())).intValue()));
             case DrawLexer.OPERATOR_OR:
                 return (visit(node.getLeft()) == 1.0) || (visit(node.getRight()) == 1.0) ? 1.0 : 0.0;
             case DrawLexer.OPERATOR_XOR:
