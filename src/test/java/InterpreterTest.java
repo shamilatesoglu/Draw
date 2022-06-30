@@ -9,14 +9,9 @@ import java.io.UnsupportedEncodingException;
 
 public class InterpreterTest {
     @Test
-    public void testParseTree() throws UnsupportedEncodingException, FileNotFoundException {
-
-
-        String source = FileUtils.readString("grammar/mandelbrot.draw");
-
-        DrawInterpreter.executeAll(source, new FileOutputStream(new File("output.png")));
-
-
+    public void test() throws UnsupportedEncodingException, FileNotFoundException {
+        String source = FileUtils.readString("sample/mandelbrot.draw");
+        DrawInterpreter.executeAll(source, new FileOutputStream(new File("sample/output.png")));
     }
 
 }
