@@ -45,6 +45,8 @@ public class ExpressionEvaluatingASTVisitor extends DrawBaseASTVisitor<Double> {
                 return visit(node.getLeft()) * visit(node.getRight());
             case DrawLexer.OPERATOR_DIV:
                 return visit(node.getLeft()) / visit(node.getRight());
+            case DrawLexer.OPERATOR_MOD:
+                return visit(node.getLeft()) % visit(node.getRight());
             case DrawLexer.OPERATOR_EXP:
                 return Math.pow(visit(node.getLeft()), visit(node.getRight()));
             case DrawLexer.OPERATOR_AND:
@@ -92,5 +94,32 @@ public class ExpressionEvaluatingASTVisitor extends DrawBaseASTVisitor<Double> {
         if (!inputs.containsKey(reference))
             throw new DependencyNotFoundException(reference);
         return inputs.get(reference);
+    }
+
+    @Override
+    public Double visit(MathFunctionCallASTNode node) {
+        double argument = visit(node.getArgument());
+        String functionName = node.getFunctionName().toLowerCase();
+        
+        return switch (functionName) {
+            case "sin" -> Math.sin(argument);
+            case "cos" -> Math.cos(argument);
+            case "tan" -> Math.tan(argument);
+            case "cot" -> 1.0 / Math.tan(argument);
+            case "asin" -> Math.asin(argument);
+            case "acos" -> Math.acos(argument);
+            case "atan" -> Math.atan(argument);
+            case "sinh" -> Math.sinh(argument);
+            case "cosh" -> Math.cosh(argument);
+            case "tanh" -> Math.tanh(argument);
+            case "sqrt" -> Math.sqrt(argument);
+            case "abs" -> Math.abs(argument);
+            case "floor" -> Math.floor(argument);
+            case "ceil" -> Math.ceil(argument);
+            case "exp" -> Math.exp(argument);
+            case "log" -> Math.log(argument);
+            case "log10" -> Math.log10(argument);
+            default -> throw new IllegalArgumentException("Unknown function: " + functionName);
+        };
     }
 }

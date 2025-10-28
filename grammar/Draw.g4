@@ -96,10 +96,11 @@ identifier
 
 expression
     :   '(' expression ')'                                                                      # parenthesisExpression
+    |   function=('sin'|'cos'|'tan'|'cot'|'asin'|'acos'|'atan'|'sinh'|'cosh'|'tanh'|'sqrt'|'abs'|'floor'|'ceil'|'exp'|'log'|'log10') '(' expression ')'  # mathFunctionCallExpression
     |   operation=('+'|'-') expression                                                          # unaryExpression
     |   left=expression operation='^' right=expression                                          # infixExpression
     |   left=expression operation='**' right=expression                                         # infixExpression
-    |   left=expression operation=('*'|'/') right=expression                                    # infixExpression
+    |   left=expression operation=('*'|'/'|'%') right=expression                                # infixExpression
     |   left=expression operation=('+'|'-') right=expression                                    # infixExpression
     |   left=expression operation=('=='|'!='|'>'|'<'|'>='|'<=') right=expression                # infixExpression
     |   left=expression operation=('&&'|'||') right=expression                                  # infixExpression
@@ -182,6 +183,7 @@ OPERATOR_SUB         : '-';
 OPERATOR_MUL         : '*';
 OPERATOR_EXP         : '**';
 OPERATOR_DIV         : '/';
+OPERATOR_MOD         : '%';
 OPERATOR_AND         : '&&';
 OPERATOR_BITWISE_AND : '&';
 OPERATOR_OR          : '||';

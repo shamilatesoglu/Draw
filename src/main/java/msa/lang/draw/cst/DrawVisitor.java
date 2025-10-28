@@ -1,4 +1,4 @@
-// Generated from C:/Repos/Draw/grammar\Draw.g4 by ANTLR 4.9.1
+// Generated from Draw.g4 by ANTLR 4.13.2
 package msa.lang.draw.cst;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -144,6 +144,13 @@ public interface DrawVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitInfixExpression(DrawParser.InfixExpressionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code mathFunctionCallExpression}
+	 * labeled alternative in {@link DrawParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMathFunctionCallExpression(DrawParser.MathFunctionCallExpressionContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code numberExpression}
 	 * labeled alternative in {@link DrawParser#expression}.

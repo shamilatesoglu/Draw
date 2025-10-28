@@ -1,4 +1,4 @@
-// Generated from C:/Repos/Draw/grammar\Draw.g4 by ANTLR 4.9.1
+// Generated from Draw.g4 by ANTLR 4.13.2
 package msa.lang.draw.cst;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -231,6 +231,18 @@ public interface DrawListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitInfixExpression(DrawParser.InfixExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code mathFunctionCallExpression}
+	 * labeled alternative in {@link DrawParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterMathFunctionCallExpression(DrawParser.MathFunctionCallExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code mathFunctionCallExpression}
+	 * labeled alternative in {@link DrawParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitMathFunctionCallExpression(DrawParser.MathFunctionCallExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code numberExpression}
 	 * labeled alternative in {@link DrawParser#expression}.

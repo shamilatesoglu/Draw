@@ -33,6 +33,8 @@ public abstract class DrawAbstractSyntaxTreeVisitor<T> {
 
     public abstract T visit(NegationASTNode node);
 
+    public abstract T visit(MathFunctionCallASTNode node);
+
     public abstract T visit(RepeatASTNode node);
 
     public abstract T visit(WhileASTNode node);
@@ -40,6 +42,10 @@ public abstract class DrawAbstractSyntaxTreeVisitor<T> {
     public abstract T visit(IfASTNode node);
 
     public abstract T visit(StatementBlockASTNode node);
+
+    public abstract T visit(DepictDeclarationASTNode node);
+
+    public abstract T visit(DepictCallASTNode node);
 
     public T visit(DrawAbstractSyntaxTreeNode node) {
         if (node instanceof CompilationUnitASTNode) {
@@ -84,6 +90,9 @@ public abstract class DrawAbstractSyntaxTreeVisitor<T> {
         if (node instanceof NegationASTNode) {
             return visit((NegationASTNode) node);
         }
+        if (node instanceof MathFunctionCallASTNode) {
+            return visit((MathFunctionCallASTNode) node);
+        }
         if (node instanceof TurnASTNode) {
             return visit((TurnASTNode) node);
         }
@@ -98,6 +107,12 @@ public abstract class DrawAbstractSyntaxTreeVisitor<T> {
         }
         if (node instanceof StatementBlockASTNode) {
             return visit((StatementBlockASTNode) node);
+        }
+        if (node instanceof DepictDeclarationASTNode) {
+            return visit((DepictDeclarationASTNode) node);
+        }
+        if (node instanceof DepictCallASTNode) {
+            return visit((DepictCallASTNode) node);
         }
 
         return null;

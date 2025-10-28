@@ -15,6 +15,8 @@ public class ExecutorASTVisitor extends DrawBaseASTVisitor<Void> {
     private final SymbolTable symbolTable;
 
     private final Map<String, Double> evaluated;
+    
+    private final Map<String, DepictDeclarationASTNode> depictDeclarations;
 
     private Pen pen;
     private Paper paper;
@@ -22,6 +24,7 @@ public class ExecutorASTVisitor extends DrawBaseASTVisitor<Void> {
     public ExecutorASTVisitor() {
         this.symbolTable = new SymbolTable();
         this.evaluated = new LinkedHashMap<>();
+        this.depictDeclarations = new LinkedHashMap<>();
 
         this.pen = new Pen();
         this.paper = null;
@@ -159,6 +162,68 @@ public class ExecutorASTVisitor extends DrawBaseASTVisitor<Void> {
             visit(node.getSecondary());
         }
 
+        return null;
+    }
+
+    @Override
+    public Void visit(DepictDeclarationASTNode node) {
+        // Store the depict declaration for later use
+        depictDeclarations.put(node.getIdentifier(), node);
+        return null;
+    }
+
+    @Override
+    public Void visit(DepictCallASTNode node) {
+        String depictName = node.getReference().getId();
+        
+        // Look up the depict declaration
+        if (!depictDeclarations.containsKey(depictName)) {
+            throw new IllegalArgumentException("Depict function not found: " + depictName);
+        }
+        
+        DepictDeclarationASTNode declaration = depictDeclarations.get(depictName);
+        
+        // Check parameter count
+        if (declaration.getParameterList().size() != node.getActualParameterList().size()) {
+            throw new IllegalArgumentException("Wrong number of arguments for depict " + depictName + 
+                ": expected " + declaration.getParameterList().size() + 
+                ", got " + node.getActualParameterList().size());
+        }
+        
+        // Save current variable values (for scope management)
+        Map<String, Double> savedValues = new LinkedHashMap<>();
+        for (String param : declaration.getParameterList()) {
+            if (evaluated.containsKey(param)) {
+                savedValues.put(param, evaluated.get(param));
+            }
+        }
+        
+        // Bind parameters to arguments
+        for (int i = 0; i < declaration.getParameterList().size(); i++) {
+            String paramName = declaration.getParameterList().get(i);
+            Double argValue = evaluateExpression(node.getActualParameterList().get(i));
+            
+            if (!symbolTable.contains(paramName)) {
+                symbolTable.insert(new Symbol(paramName));
+            }
+            
+            evaluated.put(paramName, argValue);
+        }
+        
+        // Execute the depict body
+        for (StatementASTNode statement : declaration.getStatements()) {
+            visit(statement);
+        }
+        
+        // Restore previous variable values
+        for (String param : declaration.getParameterList()) {
+            if (savedValues.containsKey(param)) {
+                evaluated.put(param, savedValues.get(param));
+            } else {
+                evaluated.remove(param);
+            }
+        }
+        
         return null;
     }
 }

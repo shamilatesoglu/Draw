@@ -1,0 +1,22 @@
+depict kochLine(length, depth) {
+    if depth == 0 {
+        forward length.
+    } else {
+        kochLine(length/3, depth-1).
+        turn -60.
+        kochLine(length/3, depth-1).
+        turn 120.
+        kochLine(length/3, depth-1).
+        turn -60.
+        kochLine(length/3, depth-1).
+    }
+}
+
+paper 800 800.
+go 150 150.
+pen down.
+
+repeat 3 {
+    kochLine(500, 4).
+    turn 120.
+}

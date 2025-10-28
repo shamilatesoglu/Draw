@@ -33,7 +33,7 @@ public class FileUtils {
 
             String str;
             while ((str = reader.readLine()) != null) {
-                stringBuilder.append(str);
+                stringBuilder.append(str).append('\n');
             }
 
         } catch (IOException e) {

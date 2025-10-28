@@ -159,7 +159,7 @@ public class DrawAbstractSyntaxTreeBuilder extends DrawBaseVisitor<DrawAbstractS
         IfASTNode node = new IfASTNode(
                 (ExpressionASTNode) visit(ctx.expression()),
                 (StatementASTNode) visit(ctx.primary),
-                (StatementASTNode) visit(ctx.secondary));
+                ctx.secondary != null ? (StatementASTNode) visit(ctx.secondary) : null);
 
         return node;
     }
@@ -192,6 +192,14 @@ public class DrawAbstractSyntaxTreeBuilder extends DrawBaseVisitor<DrawAbstractS
                 (ExpressionASTNode) visit(ctx.check),
                 (ExpressionASTNode) visit(ctx.first),
                 (ExpressionASTNode) visit(ctx.second)
+        );
+    }
+
+    @Override
+    public DrawAbstractSyntaxTreeNode visitMathFunctionCallExpression(DrawParser.MathFunctionCallExpressionContext ctx) {
+        return new MathFunctionCallASTNode(
+                ctx.function.getText(),
+                (ExpressionASTNode) visit(ctx.expression())
         );
     }
 }

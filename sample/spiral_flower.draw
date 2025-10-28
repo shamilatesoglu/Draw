@@ -1,0 +1,134 @@
+/**
+ * Draw Sample: Colorful Spiral Flower
+ * This program creates a beautiful spiral flower pattern using the Draw language.
+ * It demonstrates various features including loops, mathematical expressions,
+ * pen control, and color manipulation.
+ */
+
+// Set up the canvas
+width = 400.
+height = 400.
+paper width height.
+
+// Initialize variables
+centerX = width / 2.
+centerY = height / 2.
+maxRadius = 150.
+angleStep = 0.1.
+radiusStep = 0.5.
+totalSteps = 300.
+
+// Start from the center
+go centerX centerY.
+pen down.
+
+// Draw the spiral flower
+step = 0.
+while step < totalSteps {
+    // Calculate spiral coordinates
+    angle = step * angleStep.
+    radius = (step / totalSteps) * maxRadius.
+    
+    // Calculate position using spiral mathematics
+    x = centerX + radius * cos(angle * 6).
+    y = centerY + radius * sin(angle * 6).
+    
+    // Create rainbow colors based on angle
+    colorValue = ((step / totalSteps) * 0xffffff) & 0xffffff.
+    
+    // Alternate between different color patterns
+    if (step % 20) < 10 {
+        // Red to blue gradient
+        red = ((1.0 - (step / totalSteps)) * 0xff0000) & 0xff0000.
+        blue = ((step / totalSteps) * 0x0000ff) & 0x0000ff.
+        colorValue = red + blue.
+    } else {
+        // Green to purple gradient  
+        green = ((sin(step * 0.1) + 1) * 0.5 * 0x00ff00) & 0x00ff00.
+        purple = 0x800080.
+        colorValue = green + purple.
+    }
+    
+    pen color colorValue.
+    go x y.
+    
+    step = step + 1.
+}
+
+// Add decorative border
+pen color 0x000000.
+borderSize = 10.
+
+// Draw top border
+y = borderSize.
+x = borderSize.
+pen up.
+go x y.
+pen down.
+repeat (width - 2 * borderSize) {
+    go x y.
+    x = x + 1.
+}
+
+// Draw right border  
+repeat (height - 2 * borderSize) {
+    go x y.
+    y = y + 1.
+}
+
+// Draw bottom border
+repeat (width - 2 * borderSize) {
+    go x y.
+    x = x - 1.
+}
+
+// Draw left border
+repeat (height - 2 * borderSize) {
+    go x y.
+    y = y - 1.
+}
+
+// Add corner decorations
+cornerSize = 20.
+
+// Top-left corner decoration
+pen color 0xff0000.
+pen up.
+go borderSize borderSize.
+pen down.
+repeat cornerSize {
+    go (borderSize + cornerSize) (borderSize + cornerSize).
+    go borderSize borderSize.
+    go (borderSize + cornerSize) borderSize.
+    go borderSize (borderSize + cornerSize).
+}
+
+// Top-right corner decoration  
+pen color 0x00ff00.
+pen up.
+go (width - borderSize - cornerSize) borderSize.
+pen down.
+repeat cornerSize {
+    go (width - borderSize) (borderSize + cornerSize).
+    go (width - borderSize - cornerSize) borderSize.
+}
+
+// Bottom-right corner decoration
+pen color 0x0000ff.
+pen up. 
+go (width - borderSize) (height - borderSize - cornerSize).
+pen down.
+repeat cornerSize {
+    go (width - borderSize - cornerSize) (height - borderSize).
+    go (width - borderSize) (height - borderSize - cornerSize).
+}
+
+// Bottom-left corner decoration
+pen color 0xffff00.
+pen up.
+go (borderSize + cornerSize) (height - borderSize).
+pen down.
+repeat cornerSize {
+    go borderSize (height - borderSize - cornerSize).
+    go (borderSize + cornerSize) (height - borderSize).
+}

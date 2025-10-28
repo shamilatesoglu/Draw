@@ -4,6 +4,7 @@ import msa.lang.draw.ast.DrawAbstractSyntaxTreeBuilder;
 import msa.lang.draw.ast.node.CompilationUnitASTNode;
 import msa.lang.draw.cst.DrawLexer;
 import msa.lang.draw.cst.DrawParser;
+import msa.lang.draw.domain.Paper;
 import msa.lang.draw.runtime.ExecutorASTVisitor;
 import msa.lang.draw.utils.FileUtils;
 import net.sourceforge.argparse4j.ArgumentParsers;
@@ -17,7 +18,7 @@ import java.io.*;
 
 public class DrawInterpreter {
 
-    public static void executeAll(String source, OutputStream out) {
+    public static void executeAll(String source, OutputStream out) throws IOException {
         // Lexical Analysis
         DrawLexer lexer = new DrawLexer(CharStreams.fromString(source));
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
@@ -29,14 +30,10 @@ public class DrawInterpreter {
         ExecutorASTVisitor executor = new ExecutorASTVisitor();
         executor.visit(root);
 
-        try {
-            executor.getPaper().print(out);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        executor.getPaper().print(out);
     }
 
-    public static void executeAll(String source) {
+    public static void executeAll(String source) throws IOException {
         try {
             PrintStream out = new PrintStream(new FileOutputStream(FileDescriptor.out), true, "UTF-8");
             executeAll(source, out);
@@ -45,7 +42,7 @@ public class DrawInterpreter {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         ArgumentParser parser = ArgumentParsers.newFor("Draw").build()
                 .defaultHelp(true)

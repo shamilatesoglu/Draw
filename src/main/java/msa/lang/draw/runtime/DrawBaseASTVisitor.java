@@ -110,6 +110,13 @@ public class DrawBaseASTVisitor<T> extends DrawAbstractSyntaxTreeVisitor<T> {
     }
 
     @Override
+    public T visit(MathFunctionCallASTNode node) {
+        visit(node.getArgument());
+
+        return null;
+    }
+
+    @Override
     public T visit(RepeatASTNode node) {
         visit(node.getNExpression());
 
@@ -147,6 +154,26 @@ public class DrawBaseASTVisitor<T> extends DrawAbstractSyntaxTreeVisitor<T> {
 
         for (StatementASTNode statement : node.getStatements()) {
             visit(statement);
+        }
+
+        return null;
+    }
+
+    @Override
+    public T visit(DepictDeclarationASTNode node) {
+        for (StatementASTNode statement : node.getStatements()) {
+            visit(statement);
+        }
+
+        return null;
+    }
+
+    @Override
+    public T visit(DepictCallASTNode node) {
+        visit(node.getReference());
+        
+        for (ExpressionASTNode expression : node.getActualParameterList()) {
+            visit(expression);
         }
 
         return null;

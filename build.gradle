@@ -1,9 +1,36 @@
 plugins {
     id 'java'
+    id 'application'
+    id 'antlr'
 }
 
 group 'msa.lang'
 version '1.0-SNAPSHOT'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+application {
+    mainClass = 'msa.lang.draw.DrawInterpreter'
+}
+
+generateGrammarSource {
+    maxHeapSize = "64m"
+    arguments += ['-visitor', '-package', 'msa.lang.draw.cst']
+    outputDirectory = file("src/main/java/msa/lang/draw/cst")
+}
+
+sourceSets {
+    main {
+        antlr {
+            srcDirs = ['grammar']
+        }
+    }
+}
+
+compileJava.dependsOn generateGrammarSource
 
 repositories {
     mavenCentral()
@@ -15,23 +42,34 @@ task fatJar(type: Jar) {
     }
     archiveFileName = "DrawDSL.jar"
     from {
-        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
     with jar
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    antlr 'org.antlr:antlr4:4.13.2'
+    
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.11.3'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.11.3'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-    implementation 'org.antlr:antlr4:4.9.1'
+    implementation 'org.antlr:antlr4-runtime:4.13.2'
 
-    implementation 'net.sourceforge.argparse4j:argparse4j:0.8.1'
+    implementation 'net.sourceforge.argparse4j:argparse4j:0.9.0'
 }
 
 test {
     useJUnitPlatform()
 }
 
-apply plugin: 'idea'
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'msa.lang.draw.DrawInterpreter'
+    }
+}

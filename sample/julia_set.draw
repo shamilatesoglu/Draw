@@ -1,0 +1,123 @@
+// Julia Set Renderer
+// Renders the Julia set for a fixed complex number 'c'
+
+// --- 1. Configuration ---
+
+// Set the canvas size (in pixels)
+PAPER 600 600.
+
+// Store dimensions in variables for easy mapping
+width = 600.
+height = 600.
+
+// Define the Julia set parameter 'c = c_real + c_imag * i'
+// (c = -0.74543 + 0.11301i is a good default)
+c_real = -0.74543.
+c_imag = 0.11301.
+
+// Define the region of the complex plane to view
+x_min = -1.5.
+x_max = 1.5.
+y_min = -1.5.
+y_max = 1.5.
+
+// Define the maximum number of iterations
+max_iter = 100.
+
+// --- 2. Variable Declarations ---
+
+// Screen pixel iterators
+px = 0.
+py = 0.
+
+// Iteration counter
+i = 0.
+
+// Complex number z = z_real + z_imag * i
+z_real = 0.
+z_imag = 0.
+
+// Initial z0 (mapped from pixel)
+z_real_0 = 0.
+z_imag_0 = 0.
+
+// Temporary variables for calculating z^2 + c
+zx_new = 0.
+zy_new = 0.
+
+// Calculated color value
+color_val = 0.
+gray = 0.
+
+// --- 3. Render Loop ---
+
+// Start with the pen up to avoid drawing while moving
+PEN UP.
+
+// Outer loop: Iterate over 'px' (screen X coordinate)
+px = 0.
+WHILE px < width {
+
+    // Inner loop: Iterate over 'py' (screen Y coordinate)
+    py = 0.
+    WHILE py < height {
+
+        // --- 4. Map Pixel to Complex Plane ---
+        // Map pixel (px, py) to a complex number z0
+        z_real_0 = (px / width) * (x_max - x_min) + x_min.
+        z_imag_0 = (py / height) * (y_max - y_min) + y_min.
+
+        // Reset z to z0 for this pixel
+        z_real = z_real_0.
+        z_imag = z_imag_0.
+
+        i = 0.
+
+        // --- 5. Run Julia Iteration ---
+        // Loop while i < max_iter AND z hasn't escaped
+        // Escape condition is |z| > 2, or |z|^2 > 4
+        WHILE (i < max_iter) && ((z_real*z_real + z_imag*z_imag) < 4.0) {
+
+            // Calculate z_new = z*z + c
+            // z*z = (z_real*z_real - z_imag*z_imag) + (2.0 * z_real * z_imag)i
+            zx_new = z_real*z_real - z_imag*z_imag + c_real.
+            zy_new = 2.0 * z_real * z_imag + c_imag.
+
+            // Update z
+            z_real = zx_new.
+            z_imag = zy_new.
+
+            i = i + 1.
+        }
+
+        // --- 6. Color and Draw Pixel ---
+
+        // Go to the pixel location.
+        // (Assumes PAPER 600 600 creates a 600x600 grid
+        // with 0,0 at the bottom-left)
+        GO px py.
+
+        IF i == max_iter {
+            // Point did NOT escape; it's in the set.
+            PEN COLOR 0x000000. // Black
+        } ELSE {
+            // Point escaped. Color based on iteration count 'i'.
+            // We'll use a simple grayscale mapping.
+            gray = floor( (i * 255.0) / max_iter ).
+
+            // Combine into a 24-bit RGB color (R=G=B)
+            // color_val = (gray * 256 * 256) + (gray * 256) + gray
+            color_val = gray * 65536 + gray * 256 + gray.
+
+            PEN COLOR color_val.
+        }
+
+        // Draw a single "pixel" by moving a tiny amount
+        PEN DOWN.
+        MOVE 0.1 0.
+        PEN UP.
+
+        py = py + 1.
+    }
+    px = px + 1.
+}

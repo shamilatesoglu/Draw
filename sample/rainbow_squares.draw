@@ -1,0 +1,117 @@
+/**
+ * Draw Sample: Rainbow Squares
+ * A simple but elegant program demonstrating the Draw language features:
+ * - Paper setup
+ * - Variable assignments and expressions
+ * - Repeat loops
+ * - Pen color changes
+ * - Geometric drawing
+ */
+
+// Canvas setup
+size = 250.
+paper size size.
+
+// Drawing parameters
+squareSize = 30.
+spacing = 40.
+startX = 25.
+startY = 25.
+
+// Color values for rainbow effect
+red = 0xff0000.
+orange = 0xff8000.
+yellow = 0xffff00.
+green = 0x00ff00.
+cyan = 0x00ffff.
+blue = 0x0000ff.
+purple = 0x8000ff.
+
+// Draw rainbow squares in a grid pattern
+row = 0.
+repeat 5 {
+    col = 0.
+    repeat 5 {
+        // Calculate position
+        x = startX + col * spacing.
+        y = startY + row * spacing.
+        
+        // Choose color based on position
+        colorIndex = (row + col) % 7.
+        
+        if colorIndex == 0 {
+            pen color red.
+        }
+        if colorIndex == 1 {
+            pen color orange.
+        }
+        if colorIndex == 2 {
+            pen color yellow.
+        }
+        if colorIndex == 3 {
+            pen color green.
+        }
+        if colorIndex == 4 {
+            pen color cyan.
+        }
+        if colorIndex == 5 {
+            pen color blue.
+        }
+        if colorIndex == 6 {
+            pen color purple.
+        }
+        
+        // Draw the square
+        pen up.
+        go x y.
+        pen down.
+        
+        // Draw four sides of the square
+        go (x + squareSize) y.
+        go (x + squareSize) (y + squareSize).
+        go x (y + squareSize).
+        go x y.
+        
+        col = col + 1.
+    }
+    row = row + 1.
+}
+
+// Draw a border around the entire canvas
+pen color 0x000000.
+borderThickness = 3.
+
+// Draw thick border by drawing multiple rectangles
+thickness = 0.
+repeat borderThickness {
+    pen up.
+    go thickness thickness.
+    pen down.
+    
+    // Top border
+    go (size - thickness) thickness.
+    // Right border  
+    go (size - thickness) (size - thickness).
+    // Bottom border
+    go thickness (size - thickness).
+    // Left border (close the rectangle)
+    go thickness thickness.
+    
+    thickness = thickness + 1.
+}
+
+// Add a central decorative element
+centerX = size / 2.
+centerY = size / 2.
+pen color 0x800080.
+
+// Draw a diamond in the center
+diamondSize = 15.
+
+pen up.
+go centerX (centerY - diamondSize).
+pen down.
+go (centerX + diamondSize) centerY.
+go centerX (centerY + diamondSize).
+go (centerX - diamondSize) centerY.
+go centerX (centerY - diamondSize).
